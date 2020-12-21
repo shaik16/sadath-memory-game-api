@@ -2,13 +2,39 @@ const express = require('express');
 const env = require('./config');
 
 const app = express();
+const routes = require('./router/routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
 	res.json({
-		message: 'Welcome to the api of memory-game',
+		status: 'active! Welcome to the memory-game api',
+		message: 'append the url with /api for highScores data',
+	});
+});
+
+app.use('/api', routes);
+
+app.use((err, req, res, next) => {
+	console.error(err);
+	return res.status(500).json({
+		status: 'Error',
+		message: err,
+	});
+});
+
+app.get('/api*', (req, res) => {
+	res.status(400).json({
+		status: 'invalid!',
+		message: 'Append the url correctly! with just /api only',
+	});
+});
+
+app.get('/*', (req, res) => {
+	res.status(404).json({
+		status: 'invalid!',
+		message: `The url doesn't exist append the url with /api only`,
 	});
 });
 
