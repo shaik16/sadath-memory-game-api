@@ -1,14 +1,19 @@
 {
-  "name": "linters",
+  "name": "memory-game-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node src/server/server.js",
+    "dev": "nodemon src/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "14.14.0"
+  },
   "devDependencies": {
     "eslint": "^7.14.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -21,9 +26,12 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.0.0",
+    "nodemon": "^2.0.6",
     "prettier": "^2.2.0"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
   }
 }
