@@ -4,6 +4,7 @@ const dbConnection = require('../database/index');
 const runQuery = require('../database/runQuery');
 const runQueryWithPlaceHolder = require('../database/runQueryWithPlaceHolder');
 const validator = require('../validator');
+const logger = require('../logger');
 
 const router = express.Router();
 
@@ -12,8 +13,10 @@ router
 	.get(async (req, res, next) => {
 		try {
 			const connection = await dbConnection.connect();
+			logger.info('database connection established');
 			const data = await runQuery(connection, queryList.selectAllQuery('score'));
 			connection.release();
+			logger.info('database connection released');
 			return res.json(data);
 		} catch (err) {
 			return next(err.message);
@@ -31,6 +34,8 @@ router
 				await validator({ name: body.name });
 			}
 			const connection = await dbConnection.connect();
+			logger.info('database connection established');
+			logger.info('database connection released');
 			await runQueryWithPlaceHolder(connection, queryList.insertQuery('score'), [data]);
 			connection.release();
 			return res.json({

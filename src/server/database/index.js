@@ -15,7 +15,6 @@ const connect = () => {
 			if (err) {
 				return reject(err);
 			}
-			console.log('Connection Established');
 			return resolve(connection);
 		});
 	});

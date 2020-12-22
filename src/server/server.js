@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const env = require('./config');
+const logger = require('./logger');
 
 const app = express();
 app.use(cors());
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
 app.use('/api', routes);
 
 app.use((err, req, res, next) => {
-	console.error(err);
+	logger.error(err);
 	return res.status(500).json({
 		status: 'Error',
 		message: err,
@@ -41,5 +42,5 @@ app.get('/*', (req, res) => {
 });
 
 app.listen(process.env.PORT || env.port, () => {
-	console.log(`Server started on ${process.env.PORT || 3000}`);
+	logger.info(`Server started on ${process.env.PORT || 3000}`);
 });
