@@ -3,6 +3,7 @@ const queryList = require('../database/queries');
 const dbConnection = require('../database/index');
 const runQuery = require('../database/runQuery');
 const runQueryWithPlaceHolder = require('../database/runQueryWithPlaceHolder');
+const validator = require('../validator');
 
 const router = express.Router();
 
@@ -21,8 +22,14 @@ router
 	.post(async (req, res, next) => {
 		try {
 			const { body } = req;
+			console.log(body);
 			const data = [];
 			data.push(body.name, body.level, body.score);
+			if (body.email !== undefined) {
+				await validator({ name: body.name, email: body.email });
+			} else {
+				await validator({ name: body.name });
+			}
 			const connection = await dbConnection.connect();
 			await runQueryWithPlaceHolder(connection, queryList.insertQuery('score'), [data]);
 			connection.release();
