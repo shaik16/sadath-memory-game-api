@@ -5,6 +5,7 @@ const runQuery = require('../database/runQuery');
 const runQueryWithPlaceHolder = require('../database/runQueryWithPlaceHolder');
 const validator = require('../validator');
 const logger = require('../logger');
+const sendMail = require('../mailgun');
 
 const router = express.Router();
 
@@ -25,14 +26,19 @@ router
 	.post(async (req, res, next) => {
 		try {
 			const { body } = req;
-			console.log(body);
 			const data = [];
 			data.push(body.name, body.level, body.score);
 			if (body.email !== undefined) {
 				await validator({ name: body.name, email: body.email });
-			} else {
-				await validator({ name: body.name });
+
+				const mailStatus = await sendMail(body.email, body.message);
+				return res.json({
+					status: `${mailStatus.message}`,
+					message: `successfully mail sent to ${body.email}`,
+				});
 			}
+
+			await validator({ name: body.name });
 			const connection = await dbConnection.connect();
 			logger.info('database connection established');
 			logger.info('database connection released');

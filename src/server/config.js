@@ -8,4 +8,6 @@ module.exports = {
 	user: process.env.DB_USER,
 	pass: process.env.DB_PASS,
 	DB: process.env.DB,
+	API_KEY: process.env.API_KEY,
+	DOMAIN: process.env.DOMAIN,
 };
